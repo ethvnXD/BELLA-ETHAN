@@ -106,8 +106,16 @@ h2 { font-size: 1.5em; margin: 10px 0; }
 <div class="timer" id="timer"></div>
 
 <div class="slideshow">
-    <img id="slide1" class="active" src="IMG_0468.jpeg" alt="Love photo">
-    <img id="slide2" src="IMG_0393.jpeg" alt="Love photo">
+    <!-- preload all images -->
+    <img src="IMG_0468.jpeg" class="active">
+    <img src="IMG_0393.jpeg">
+    <img src="IMG_0106.jpeg">
+    <img src="IMG_3195.jpeg">
+    <img src="IMG_2998.jpeg">
+    <img src="IMG_3506.jpeg">
+    <img src="IMG_0486.jpeg">
+    <img src="IMG_2099.jpeg">
+    <img src="IMG_2047.jpeg">
 </div>
 
 <div class="message">
@@ -135,36 +143,19 @@ setInterval(() => {
 }, 1000);
 
 // ===== Slideshow =====
-const images = [
-    "IMG_0468.jpeg","IMG_0393.jpeg","IMG_0106.jpeg","IMG_3195.jpeg",
-    "IMG_2998.jpeg","IMG_3506.jpeg","IMG_0486.jpeg","IMG_2099.jpeg","IMG_2047.jpeg"
-];
-
-let currentIndex = 0;
-const slide1 = document.getElementById("slide1");
-const slide2 = document.getElementById("slide2");
-let isSlide1Active = true;
-
-// Preload images
-images.forEach(src => { const img = new Image(); img.src = src; });
-
-function fadeToNextImage() {
-    currentIndex = (currentIndex + 1) % images.length;
-    const nextImage = isSlide1Active ? slide2 : slide1;
-    const currentImage = isSlide1Active ? slide1 : slide2;
-
-    nextImage.src = images[currentIndex];
-    nextImage.classList.add("active");
-    currentImage.classList.remove("active");
-
-    isSlide1Active = !isSlide1Active;
-}
-
-setInterval(fadeToNextImage, 4000);
+const slides = document.querySelectorAll(".slideshow img");
+let currentSlide = 0;
+setInterval(() => {
+    slides.forEach((img, i) => {
+        img.classList.remove("active");
+        if(i === currentSlide) img.classList.add("active");
+    });
+    currentSlide = (currentSlide + 1) % slides.length;
+}, 4000);
 
 // ===== Hearts =====
 function createHeart() {
-    if(document.querySelectorAll('.heart').length > 30) return; // limit
+    if(document.querySelectorAll('.heart').length > 30) return;
     const heart = document.createElement('div');
     heart.classList.add('heart');
     heart.style.left = Math.random() * window.innerWidth + 'px';
