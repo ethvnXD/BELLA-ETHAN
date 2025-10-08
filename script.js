@@ -6,7 +6,7 @@ const IMAGES = [
 ];
 
 // Initial youtube link (you can change or use the input below)
-let YT_URL = "https://youtu.be/9vMskIqWz5M?si=8JB84d8glBAk_pNE";
+let YT_URL = "https://youtu.be/9vMskIqWz5M?si=mXPNhQB1W9qrOtwv";
 
 // Custom text default
 let CUSTOM_TEXT = document.getElementById ? document.getElementById('customText').innerHTML : "";
