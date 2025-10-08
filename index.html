@@ -26,11 +26,23 @@ body {
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
-iframe { width: 100%; height: 80px; border: none; }
+iframe {
+    width: 100%;
+    height: 80px;
+    border: none;
+    loading: lazy;
+}
 
-h2 { font-size: 1.4em; margin: 10px 0; }
+h2 {
+    font-size: 1.5em;
+    margin: 10px 0;
+}
 
-.timer { font-size: 1.6em; margin: 15px 0; color: #f8b400; }
+.timer {
+    font-size: 1.8em;
+    margin: 15px 0;
+    color: #f8b400;
+}
 
 .slideshow {
     width: 100%;
@@ -38,7 +50,6 @@ h2 { font-size: 1.4em; margin: 10px 0; }
     margin: 20px auto;
     border-radius: 15px;
     position: relative;
-    background-color: #121212;
     overflow: hidden;
 }
 
@@ -47,7 +58,16 @@ h2 { font-size: 1.4em; margin: 10px 0; }
     height: auto;
     object-fit: contain;
     border-radius: 15px;
-    transition: opacity 1s ease-in-out;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 1.2s ease-in-out;
+}
+
+.slideshow img.active {
+    opacity: 1;
+    z-index: 1;
 }
 
 .message {
@@ -55,21 +75,30 @@ h2 { font-size: 1.4em; margin: 10px 0; }
     margin-top: 15px;
     line-height: 1.5;
     padding: 0 10px;
+    text-align: center;
 }
 
-/* Hearts CSS */
+/* Hearts animation */
 @keyframes fall {
-    0% { transform: translateY(-50px) scale(1); opacity: 1; }
-    100% { transform: translateY(110vh) scale(0.5); opacity: 0; }
+    0% { transform: translateY(-50px) translateX(0) scale(1); opacity: 1; }
+    25% { transform: translateY(25vh) translateX(15px) scale(0.9); }
+    50% { transform: translateY(50vh) translateX(-15px) scale(0.8); }
+    75% { transform: translateY(75vh) translateX(10px) scale(0.7); }
+    100% { transform: translateY(110vh) translateX(0) scale(0.5); opacity: 0; }
 }
 
 .heart {
     position: fixed;
-    color: red;
     pointer-events: none;
+    color: red;
     animation-name: fall;
     animation-timing-function: linear;
     animation-fill-mode: forwards;
+}
+
+@media (max-width: 400px) {
+    .timer { font-size: 1.5em; }
+    .slideshow { max-width: 90%; }
 }
 </style>
 </head>
@@ -83,7 +112,8 @@ h2 { font-size: 1.4em; margin: 10px 0; }
 <div class="timer" id="timer"></div>
 
 <div class="slideshow">
-    <img id="slideshow-img" src="IMG_0468.jpeg" alt="Love photo">
+    <img id="slide1" class="active" src="IMG_0468.jpeg" alt="Love photo">
+    <img id="slide2" src="IMG_0393.jpeg" alt="Love photo">
 </div>
 
 <div class="message">
@@ -94,11 +124,10 @@ I cherish every second, every memory, and every little thing about you. You are 
 </div>
 
 <script>
-// Timer
+// ===== Timer =====
 const startDate = new Date("Jan 1, 2025 00:00:00").getTime();
 const timer = document.getElementById("timer");
 const pad = n => n.toString().padStart(2, "0");
-
 setInterval(() => {
     const now = new Date().getTime();
     const distance = now - startDate;
@@ -111,31 +140,47 @@ setInterval(() => {
     timer.innerHTML = `${years}y ${months}m ${days}d ${pad(hours)}h ${pad(minutes)}m ${pad(seconds)}s`;
 }, 1000);
 
-// Slideshow
+// ===== Slideshow =====
 const images = [
     "IMG_0468.jpeg","IMG_0393.jpeg","IMG_0106.jpeg","IMG_3195.jpeg",
     "IMG_2998.jpeg","IMG_3506.jpeg","IMG_0486.jpeg","IMG_2099.jpeg","IMG_2047.jpeg"
 ];
-let current = 0;
-const slideshowImg = document.getElementById("slideshow-img");
+
+let currentIndex = 0;
+const slide1 = document.getElementById("slide1");
+const slide2 = document.getElementById("slide2");
+let isSlide1Active = true;
+
+// Preload images
 images.forEach(src => { const img = new Image(); img.src = src; });
 
-setInterval(() => {
-    current = (current + 1) % images.length;
-    slideshowImg.style.opacity = 0;
-    setTimeout(() => { slideshowImg.src = images[current]; slideshowImg.style.opacity = 1; }, 500);
-}, 4000);
+function fadeToNextImage() {
+    currentIndex = (currentIndex + 1) % images.length;
+    const nextImage = isSlide1Active ? slide2 : slide1;
+    const currentImage = isSlide1Active ? slide1 : slide2;
 
-// Floating hearts
+    // Wait for next image to load before showing
+    nextImage.src = images[currentIndex];
+    nextImage.onload = () => {
+        nextImage.classList.add("active");
+        currentImage.classList.remove("active");
+        isSlide1Active = !isSlide1Active;
+    };
+}
+
+setInterval(fadeToNextImage, 4000);
+
+// ===== Hearts =====
 function createHeart() {
+    if(document.querySelectorAll('.heart').length > 30) return; // limit for performance
     const heart = document.createElement('div');
     heart.classList.add('heart');
-    heart.style.left = Math.random() * window.innerWidth + 'px';
-    heart.style.fontSize = 20 + Math.random()*20 + 'px';
-    heart.style.animationDuration = (6 + Math.random()*4) + 's';
+    heart.style.left = Math.random() * window.innerWidth + 'px'; // random horizontal
+    heart.style.fontSize = 20 + Math.random()*20 + 'px';       // random size
+    heart.style.animationDuration = (6 + Math.random()*4) + 's'; // random speed
     heart.innerText = '❤️';
     document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 10000);
+    setTimeout(() => heart.remove(), 12000);
 }
 setInterval(createHeart, 500);
 </script>
