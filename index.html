@@ -14,7 +14,7 @@ body {
     margin: 0 auto;
     max-width: 500px;
     overflow-x: hidden;
-    position: relative; /* for hearts */
+    position: relative;
 }
 
 .music-widget {
@@ -26,11 +26,7 @@ body {
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
-iframe {
-    width: 100%;
-    height: 80px;
-    border: none;
-}
+iframe { width: 100%; height: 80px; border: none; }
 
 h2 { font-size: 1.4em; margin: 10px 0; }
 
@@ -42,30 +38,16 @@ h2 { font-size: 1.4em; margin: 10px 0; }
     margin: 20px auto;
     border-radius: 15px;
     position: relative;
-    height: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     background-color: #121212;
+    overflow: hidden;
 }
 
 .slideshow img {
-    max-width: 100%;
-    max-height: 400px;
+    width: 100%;
+    height: auto;
     object-fit: contain;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    transition: opacity 1.2s ease-in-out;
     border-radius: 15px;
-    z-index: 0;
-}
-
-.slideshow img.visible {
-    opacity: 1;
-    z-index: 1;
+    transition: opacity 1s ease-in-out;
 }
 
 .message {
@@ -75,17 +57,21 @@ h2 { font-size: 1.4em; margin: 10px 0; }
     padding: 0 10px;
 }
 
-/* Floating hearts */
+/* Floating hearts CSS animation */
+@keyframes fall {
+    0% { transform: translateY(-50px) scale(1); opacity: 1; }
+    100% { transform: translateY(110vh) scale(0.5); opacity: 0; }
+}
+
 .heart {
     position: absolute;
     font-size: 24px;
     color: red;
-    user-select: none;
     pointer-events: none;
-    opacity: 1;
-    transition: transform 0.1s linear;
+    animation-name: fall;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
 }
-
 </style>
 </head>
 <body>
@@ -98,15 +84,7 @@ h2 { font-size: 1.4em; margin: 10px 0; }
 <div class="timer" id="timer"></div>
 
 <div class="slideshow">
-    <img src="IMG_0468.jpeg" class="visible">
-    <img src="IMG_0393.jpeg">
-    <img src="IMG_0106.jpeg">
-    <img src="IMG_3195.jpeg">
-    <img src="IMG_2998.jpeg">
-    <img src="IMG_3506.jpeg">
-    <img src="IMG_0486.jpeg">
-    <img src="IMG_2099.jpeg">
-    <img src="IMG_2047.jpeg">
+    <img id="slideshow-img" src="IMG_0468.jpeg" alt="Love photo">
 </div>
 
 <div class="message">
@@ -134,45 +112,35 @@ setInterval(() => {
     timer.innerHTML = `${years}y ${months}m ${days}d ${pad(hours)}h ${pad(minutes)}m ${pad(seconds)}s`;
 }, 1000);
 
-// Slideshow (smooth fade, no freezing)
-const slides = document.querySelectorAll(".slideshow img");
-let i = 0;
-slides.forEach(img => {
-    const preload = new Image();
-    preload.src = img.src; // preload images
-});
+// Optimized Slideshow
+const images = [
+    "IMG_0468.jpeg","IMG_0393.jpeg","IMG_0106.jpeg","IMG_3195.jpeg",
+    "IMG_2998.jpeg","IMG_3506.jpeg","IMG_0486.jpeg","IMG_2099.jpeg","IMG_2047.jpeg"
+];
+let current = 0;
+const slideshowImg = document.getElementById("slideshow-img");
+
+// Preload images
+images.forEach(src => { const img = new Image(); img.src = src; });
+
 setInterval(() => {
-    slides[i].classList.remove("visible");
-    i = (i + 1) % slides.length;
-    slides[i].classList.add("visible");
+    current = (current + 1) % images.length;
+    slideshowImg.style.opacity = 0;
+    setTimeout(() => { slideshowImg.src = images[current]; slideshowImg.style.opacity = 1; }, 500);
 }, 4000);
 
-// Floating hearts
+// Floating Hearts
 function createHeart() {
     const heart = document.createElement('div');
     heart.classList.add('heart');
     heart.style.left = Math.random() * window.innerWidth + 'px';
-    heart.style.top = '-50px';
     heart.style.fontSize = 20 + Math.random()*20 + 'px';
-    heart.style.opacity = Math.random() * 0.8 + 0.2;
-    document.body.appendChild(heart);
+    heart.style.animationDuration = (6 + Math.random()*4) + 's';
     heart.innerText = '❤️';
-
-    const speed = 0.5 + Math.random()*0.3; // slower
-    let y = -50;
-    const fall = () => {
-        y += speed;
-        heart.style.top = y + 'px';
-        if (y < window.innerHeight + 50) {
-            requestAnimationFrame(fall);
-        } else {
-            heart.remove();
-        }
-    };
-    requestAnimationFrame(fall);
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 10000);
 }
-
-setInterval(createHeart, 700);
+setInterval(createHeart, 600);
 </script>
 
 </body>
