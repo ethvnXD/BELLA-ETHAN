@@ -57,15 +57,14 @@ h2 { font-size: 1.4em; margin: 10px 0; }
     padding: 0 10px;
 }
 
-/* Floating hearts CSS animation */
+/* Hearts CSS */
 @keyframes fall {
     0% { transform: translateY(-50px) scale(1); opacity: 1; }
     100% { transform: translateY(110vh) scale(0.5); opacity: 0; }
 }
 
 .heart {
-    position: absolute;
-    font-size: 24px;
+    position: fixed;
     color: red;
     pointer-events: none;
     animation-name: fall;
@@ -112,15 +111,13 @@ setInterval(() => {
     timer.innerHTML = `${years}y ${months}m ${days}d ${pad(hours)}h ${pad(minutes)}m ${pad(seconds)}s`;
 }, 1000);
 
-// Optimized Slideshow
+// Slideshow
 const images = [
     "IMG_0468.jpeg","IMG_0393.jpeg","IMG_0106.jpeg","IMG_3195.jpeg",
     "IMG_2998.jpeg","IMG_3506.jpeg","IMG_0486.jpeg","IMG_2099.jpeg","IMG_2047.jpeg"
 ];
 let current = 0;
 const slideshowImg = document.getElementById("slideshow-img");
-
-// Preload images
 images.forEach(src => { const img = new Image(); img.src = src; });
 
 setInterval(() => {
@@ -129,7 +126,7 @@ setInterval(() => {
     setTimeout(() => { slideshowImg.src = images[current]; slideshowImg.style.opacity = 1; }, 500);
 }, 4000);
 
-// Floating Hearts
+// Floating hearts
 function createHeart() {
     const heart = document.createElement('div');
     heart.classList.add('heart');
@@ -140,7 +137,7 @@ function createHeart() {
     document.body.appendChild(heart);
     setTimeout(() => heart.remove(), 10000);
 }
-setInterval(createHeart, 600);
+setInterval(createHeart, 500);
 </script>
 
 </body>
