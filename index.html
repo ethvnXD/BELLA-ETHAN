@@ -14,6 +14,7 @@ body {
     margin: 0 auto;
     max-width: 500px;
     overflow-x: hidden;
+    position: relative; /* needed for hearts */
 }
 
 .music-widget {
@@ -43,34 +44,22 @@ h2 {
 }
 
 .slideshow {
-    position: relative;
     width: 100%;
+    max-width: 400px;
     margin: 20px auto;
-    overflow: hidden;
     border-radius: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    position: relative;
 }
 
 .slideshow img {
-    max-width: 100%;
-    max-height: 400px;
-    object-fit: contain;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    transition: opacity 1s ease-in-out;
+    width: 100%;
+    height: auto;  /* maintain aspect ratio, shows faces */
+    display: none;
     border-radius: 15px;
-    z-index: 0;
-    background-color: #121212;
 }
 
 .slideshow img.visible {
-    opacity: 1;
-    z-index: 1;
+    display: block;
 }
 
 .message {
@@ -80,19 +69,15 @@ h2 {
     padding: 0 10px;
 }
 
-/* Floating hearts animation */
+/* Floating hearts */
 .heart {
-    position: fixed;
+    position: absolute;
     font-size: 24px;
     color: red;
     user-select: none;
     pointer-events: none;
-    animation: fall linear forwards;
-}
-
-@keyframes fall {
-    0% { transform: translateY(-50px) scale(1); opacity: 1; }
-    100% { transform: translateY(110vh) scale(0.5); opacity: 0; }
+    opacity: 1;
+    transition: transform 0.1s linear;
 }
 
 </style>
@@ -157,13 +142,28 @@ function createHeart() {
     const heart = document.createElement('div');
     heart.classList.add('heart');
     heart.style.left = Math.random() * window.innerWidth + 'px';
+    heart.style.top = '-50px'; // start above the screen
     heart.style.fontSize = 20 + Math.random()*20 + 'px';
-    heart.style.animationDuration = 6 + Math.random()*4 + 's'; // slower fall
-    heart.innerText = '❤️';
+    heart.style.opacity = Math.random() * 0.8 + 0.2;
     document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 10000); // remove after animation
+    heart.innerText = '❤️';
+
+    // Animate falling
+    const speed = 1 + Math.random() * 0.5; // slower fall
+    let y = -50;
+    const fall = () => {
+        y += speed;
+        heart.style.top = y + 'px';
+        if (y < window.innerHeight + 50) {
+            requestAnimationFrame(fall);
+        } else {
+            heart.remove();
+        }
+    };
+    requestAnimationFrame(fall);
 }
-setInterval(createHeart, 400);
+
+setInterval(createHeart, 600);
 </script>
 
 </body>
