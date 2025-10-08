@@ -14,7 +14,7 @@ body {
     margin: 0 auto;
     max-width: 500px;
     overflow-x: hidden;
-    position: relative; /* needed for hearts */
+    position: relative; /* for hearts */
 }
 
 .music-widget {
@@ -32,16 +32,9 @@ iframe {
     border: none;
 }
 
-h2 {
-    font-size: 1.4em;
-    margin: 10px 0;
-}
+h2 { font-size: 1.4em; margin: 10px 0; }
 
-.timer {
-    font-size: 1.6em;
-    margin: 15px 0;
-    color: #f8b400;
-}
+.timer { font-size: 1.6em; margin: 15px 0; color: #f8b400; }
 
 .slideshow {
     width: 100%;
@@ -49,17 +42,30 @@ h2 {
     margin: 20px auto;
     border-radius: 15px;
     position: relative;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #121212;
 }
 
 .slideshow img {
-    width: 100%;
-    height: auto;  /* maintain aspect ratio, shows faces */
-    display: none;
+    max-width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 1.2s ease-in-out;
     border-radius: 15px;
+    z-index: 0;
 }
 
 .slideshow img.visible {
-    display: block;
+    opacity: 1;
+    z-index: 1;
 }
 
 .message {
@@ -128,9 +134,13 @@ setInterval(() => {
     timer.innerHTML = `${years}y ${months}m ${days}d ${pad(hours)}h ${pad(minutes)}m ${pad(seconds)}s`;
 }, 1000);
 
-// Slideshow
+// Slideshow (smooth fade, no freezing)
 const slides = document.querySelectorAll(".slideshow img");
 let i = 0;
+slides.forEach(img => {
+    const preload = new Image();
+    preload.src = img.src; // preload images
+});
 setInterval(() => {
     slides[i].classList.remove("visible");
     i = (i + 1) % slides.length;
@@ -142,14 +152,13 @@ function createHeart() {
     const heart = document.createElement('div');
     heart.classList.add('heart');
     heart.style.left = Math.random() * window.innerWidth + 'px';
-    heart.style.top = '-50px'; // start above the screen
+    heart.style.top = '-50px';
     heart.style.fontSize = 20 + Math.random()*20 + 'px';
     heart.style.opacity = Math.random() * 0.8 + 0.2;
     document.body.appendChild(heart);
     heart.innerText = '❤️';
 
-    // Animate falling
-    const speed = 1 + Math.random() * 0.5; // slower fall
+    const speed = 0.5 + Math.random()*0.3; // slower
     let y = -50;
     const fall = () => {
         y += speed;
@@ -163,7 +172,7 @@ function createHeart() {
     requestAnimationFrame(fall);
 }
 
-setInterval(createHeart, 600);
+setInterval(createHeart, 700);
 </script>
 
 </body>
