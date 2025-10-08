@@ -50,12 +50,13 @@ h2 {
     margin: 20px auto;
     overflow: hidden;
     border-radius: 15px;
+    background-color: #121212; /* prevents empty space looking odd */
 }
 
 .slideshow img {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* keeps full image visible */
+    object-fit: contain; /* full image visible, faces not cropped */
     position: absolute;
     top: 0;
     left: 0;
@@ -90,8 +91,7 @@ h2 {
 
 @keyframes fall {
     0% { transform: translateY(-50px) scale(1); opacity: 1; }
-    80% { opacity: 1; }
-    100% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+    100% { transform: translateY(110vh) scale(0.5); opacity: 0; }
 }
 
 @media (max-width: 400px) {
@@ -103,7 +103,6 @@ h2 {
 </head>
 <body>
 
-<!-- Music widget at the top -->
 <div class="music-widget">
     <iframe src="https://open.spotify.com/embed/track/36seMHoyXmLUNxcwzwjdF7?utm_source=oembed" allow="encrypted-media" allowfullscreen></iframe>
 </div>
@@ -111,7 +110,6 @@ h2 {
 <h2>I HAVE LOVED YOU FOR</h2>
 <div class="timer" id="timer"></div>
 
-<!-- Slideshow -->
 <div class="slideshow">
     <img src="IMG_0468.jpeg" class="visible">
     <img src="IMG_0393.jpeg">
@@ -125,9 +123,9 @@ h2 {
 </div>
 
 <div class="message">
-Bella, every single day my love for you grows deeper and stronger.
-Your smile brightens even the darkest of my days, and your laughter is the sweetest melody I could ever hear.
-From the tiniest moments we share to the biggest dreams we chase together, my heart is completely yours. 
+Bella, every single day my love for you grows deeper and stronger.<br>
+Your smile brightens even the darkest of my days, and your laughter is the sweetest melody I could ever hear.<br>
+From the tiniest moments we share to the biggest dreams we chase together, my heart is completely yours.<br>
 I cherish every second, every memory, and every little thing about you. You are my everything, my joy, and my home.
 </div>
 
@@ -164,12 +162,12 @@ function createHeart() {
     heart.classList.add('heart');
     heart.style.left = Math.random() * window.innerWidth + 'px';
     heart.style.fontSize = 20 + Math.random()*20 + 'px';
-    heart.style.animationDuration = 3 + Math.random()*2 + 's';
+    heart.style.animationDuration = 5 + Math.random()*3 + 's'; // slower fall
     heart.innerText = '❤️';
     document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 5000);
+    setTimeout(() => heart.remove(), 8000);
 }
-setInterval(createHeart, 300);
+setInterval(createHeart, 400);
 </script>
 
 </body>
