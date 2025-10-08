@@ -6,92 +6,108 @@
   <title>Love Timer</title>
   <style>
     body {
-  font-family: 'Poppins', sans-serif;
-  background-color: #121212;
-  color: white;
-  text-align: center;
-  padding: 20px;
-  margin: 0 auto;
-  max-width: 500px;
-}
+      font-family: 'Poppins', sans-serif;
+      background-color: #121212;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin: 0 auto;
+      max-width: 500px;
+    }
 
-h2 {
-  font-size: 1.4em;
-  margin-bottom: 10px;
-}
+    .music-widget {
+      margin: 15px auto;
+      width: 90%;
+      max-width: 350px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    }
 
-.slideshow {
-  position: relative;
-  height: auto;
-}
+    iframe {
+      width: 100%;
+      height: 80px;
+      border: none;
+    }
 
-.slideshow img {
-  width: 100%;
-  max-width: 400px;
-  height: 250px;
-  object-fit: cover;
-  border-radius: 15px;
-  display: block;
-  opacity: 0;
-  transition: opacity 1s ease-in-out;
-  margin: 10px auto;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-}
+    h2 {
+      font-size: 1.4em;
+      margin: 10px 0;
+    }
 
-.slideshow img.visible {
-  opacity: 1;
-  position: relative;
-}
+    .timer {
+      font-size: 1em;
+      margin: 10px 0;
+      color: #f8b400;
+    }
 
-.timer {
-  font-size: 1em;
-  margin-top: 10px;
-  color: #f8b400;
-}
+    .slideshow {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      height: 250px; /* fixed height for all images */
+      margin: 20px auto;
+      overflow: hidden;
+      border-radius: 15px;
+    }
 
-.message {
-  font-size: 1em;
-  margin-top: 15px;
-  line-height: 1.5;
-  padding: 0 10px;
-}
+    .slideshow img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* crop without stretching */
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      border-radius: 15px;
+      z-index: 0;
+    }
 
-.music-widget {
-  margin: 15px auto;
-  width: 90%;
-  max-width: 350px;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-}
+    .slideshow img.visible {
+      opacity: 1;
+      z-index: 1;
+    }
 
-iframe {
-  width: 100%;
-  height: 80px;
-  border: none;
-}
+    .message {
+      font-size: 1em;
+      margin-top: 15px;
+      line-height: 1.5;
+      padding: 0 10px;
+    }
 
-       }
+    @media (max-width: 400px) {
+      .slideshow {
+        height: 200px; /* smaller height o
+              }
+    }
   </style>
 </head>
 <body>
+
+  <!-- Music widget at the top -->
+  <div class="music-widget">
+    <!-- Replace with your actual embed link -->
+    <iframe src="https://open.spotify.com/embed/track/YourTrackID" allow="encrypted-media" allowfullscreen></iframe>
+  </div>
+
   <h2>I HAVE LOVED YOU FOR</h2>
   <div class="timer" id="timer"></div>
 
+  <!-- Slideshow -->
   <div class="slideshow">
     <img src="IMG_0468.jpeg" class="visible">
     <img src="IMG_0393.jpeg">
     <img src="IMG_0106.jpeg">
-    <img src="IMG_3195.jpeg">
+        <img src="IMG_3195.jpeg">
     <img src="IMG_2998.jpeg">
     <img src="IMG_3506.jpeg">
     <img src="IMG_0486.jpeg">
     <img src="IMG_2099.jpeg">
     <img src="IMG_2047.jpeg">
   </div>
-    <div class="message">
+
+  <div class="message">
     Each passing day, my heart fills with even more affection and admiration for you. ✨<br>
     Every smile of yours lights up my world.
   </div>
@@ -100,6 +116,9 @@ iframe {
     // Timer counting from Jan 1, 2025
     const startDate = new Date("Jan 1, 2025 00:00:00").getTime();
     const timer = document.getElementById("timer");
+
+    const pad = (n) => n.toString().padStart(2, "0");
+
     setInterval(() => {
       const now = new Date().getTime();
       const distance = now - startDate;
@@ -109,7 +128,7 @@ iframe {
       const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-      timer.innerHTML = `${years} years, ${months} months, ${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
+      timer.innerHTML = `${years}y ${months}m ${days}d ${pad(hours)}h ${pad(minutes)}m ${pad(seconds)}s`;
     }, 1000);
 
     // Slideshow
@@ -121,5 +140,7 @@ iframe {
       slides[i].classList.add("visible");
     }, 4000);
   </script>
+
 </body>
 </html>
+    
