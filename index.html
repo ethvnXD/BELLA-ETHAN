@@ -1,48 +1,87 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>I LOVE YOU FOREVER AND ALWAYS</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Love Timer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .slideshow img {
+      max-width: 90%;
+      height: auto;
+      border-radius: 15px;
+      display: none;
+      margin: 20px auto;
+    }
+
+    .visible {
+      display: block;
+    }
+
+    .timer {
+      font-size: 1.2em;
+      margin-top: 10px;
+      color: #f8b400;
+    }
+
+    .message {
+      font-size: 1.1em;
+      margin-top: 15px;
+      line-height: 1.5;
+    }
+  </style>
 </head>
 <body>
-  <div class="page">
-    <!-- Top small music widget -->
-    <div class="music-widget" id="musicWidget">
-      <div class="music-icon">♪</div>
-      <div class="music-text">
-        <div class="music-title" id="musicTitle">No song loaded</div>
-        <div class="music-sub" id="musicSub">Add a YouTube link below</div>
-      </div>
-      <button id="musicToggle" class="music-btn">Play</button>
-    </div>
+  <h2>I have loved you for</h2>
+  <div class="timer" id="timer"></div>
 
-    <!-- Main card -->
-    <div class="card">
-      <div class="photo-frame">
-        <div class="slideshow" id="slideshow">
-          <!-- Images will be injected by script -->
-        </div>
-      </div>
+  <div class="slideshow">
+    <img src="IMG_0468.jpeg" class="visible">
+    <img src="IMG_0393.jpeg">
+    <img src="IMG_0106.jpeg">
+    <img src="IMG_3195.jpeg">
+    <img src="IMG_2998.jpeg">
+    <img src="IMG_3506.jpeg">
+    <img src="IMG_0486.jpeg">
+    <img src="IMG_2099.jpeg">
+    <img src="IMG_2047.jpeg">
+  </div>
+    <div class="message">
+    Each passing day, my heart fills with even more affection and admiration for you. ✨<br>
+    Every smile of yours lights up my world.
+  </div>
 
-      <h1 class="heading">I HAVE LOVED YOU FOR</h1>
+  <script>
+    // Timer counting from Jan 1, 2025
+    const startDate = new Date("Jan 1, 2025 00:00:00").getTime();
+    const timer = document.getElementById("timer");
+    setInterval(() => {
+      const now = new Date().getTime();
+      const distance = now - startDate;
+      const years = Math.floor(distance / (1000 * 60 * 60 * 24 * 365));
+      const months = Math.floor((distance % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
+      const days = Math.floor((distance % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      timer.innerHTML = `${years} years, ${months} months, ${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
+    }, 1000);
 
-      <div class="timer-pill" id="timerPill">
-        <div id="countText">-- years, -- months, -- days, -- hours and -- seconds</div>
-      </div>
-
-      <div class="custom-text" id="customText">
-        Each passing day, my heart fills with even more affection and admiration for you.
-        <br />
-        ✨ Every smile of yours lights up my world, and every hug makes me feel like I’m exactly where I'm meant to be.
-      </div>
-
-  <!-- Hidden player container for YouTube IFrame API -->
-  <div id="ytPlayerContainer" style="display:none;"></div>
-
-  <script src="script.js"></script>
-  <!-- Load YouTube IFrame API -->
-  <script async src="https://www.youtube.com/iframe_api"></script>
+    // Slideshow
+    const slides = document.querySelectorAll(".slideshow img");
+    let i = 0;
+    setInterval(() => {
+      slides[i].classList.remove("visible");
+      i = (i + 1) % slides.length;
+      slides[i].classList.add("visible");
+    }, 4000);
+  </script>
 </body>
 </html>
