@@ -1,12 +1,12 @@
 // ====== CONFIG ======
 // Put your image file names or URLs (at least 10). If you host images in the repo, put the relative path (e.g. "images/1.jpg")
 const IMAGES = [
-  "images/1.jpg","images/2.jpg","images/3.jpg","images/4.jpg","images/5.jpg",
-  "images/6.jpg","images/7.jpg","images/8.jpg","images/9.jpg","images/10.jpg"
+  "IMG_0468.jpeg","IMG_0393.jpeg","IMG_0106.jpeg","IMG_3195.jpeg","IMG_3195.jpeg",
+  "IMG_2998 jpeg","IMG_3506.jpeg","IMG_0486.jpeg","IMG_2099.jpeg","IMG_2047.jpeg"
 ];
 
 // Initial youtube link (you can change or use the input below)
-let YT_URL = "";
+let YT_URL = "https://youtu.be/9vMskIqWz5M?si=8JB84d8glBAk_pNE";
 
 // Custom text default
 let CUSTOM_TEXT = document.getElementById ? document.getElementById('customText').innerHTML : "";
