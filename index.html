@@ -1,1 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>I have loved you for — Personal Page</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page">
+    <!-- Top small music widget -->
+    <div class="music-widget" id="musicWidget">
+      <div class="music-icon">♪</div>
+      <div class="music-text">
+        <div class="music-title" id="musicTitle">No song loaded</div>
+        <div class="music-sub" id="musicSub">Add a YouTube link below</div>
+      </div>
+      <button id="musicToggle" class="music-btn">Play</button>
+    </div>
 
+    <!-- Main card -->
+    <div class="card">
+      <div class="photo-frame">
+        <div class="slideshow" id="slideshow">
+          <!-- Images will be injected by script -->
+        </div>
+      </div>
+
+      <h1 class="heading">I have loved you for</h1>
+
+      <div class="timer-pill" id="timerPill">
+        <div id="countText">-- years, -- months, -- days, -- hours and -- seconds</div>
+      </div>
+
+      <div class="custom-text" id="customText">
+        Each passing day, my heart fills with even more affection and admiration for you.
+        <br />
+        ✨ Every smile of yours lights up my world, and every hug makes me feel like I’m exactly where I'm meant to be.
+      </div>
+
+      <!-- Controls for editing (you can remove from final if you prefer editing code directly) -->
+      <div class="controls">
+        <label>Youtube music link:
+          <input id="ytInput" placeholder="https://www.youtube.com/watch?v=VIDEO_ID" />
+          <button id="loadYtBtn">Load</button>
+        </label>
+        <label>Custom text:
+          <input id="customInput" placeholder="Type your custom text here" />
+          <button id="applyTextBtn">Apply</button>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden player container for YouTube IFrame API -->
+  <div id="ytPlayerContainer" style="display:none;"></div>
+
+  <script src="script.js"></script>
+  <!-- Load YouTube IFrame API -->
+  <script async src="https://www.youtube.com/iframe_api"></script>
+</body>
+</html>
