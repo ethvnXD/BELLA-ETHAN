@@ -11,7 +11,8 @@
   color: white;
   text-align: center;
   padding: 20px;
-  margin: 0;
+  margin: 0 auto;
+  max-width: 500px;
 }
 
 h2 {
@@ -19,16 +20,27 @@ h2 {
   margin-bottom: 10px;
 }
 
-.slideshow img {
-  width: 90%;
+.slideshow {
+  position: relative;
   height: auto;
-  border-radius: 15px;
-  display: none;
-  margin: 10px auto;
 }
 
-.visible {
+.slideshow img {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 15px;
   display: block;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  margin: 10px auto;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.slideshow img.visible {
+  opacity: 1;
+  position: relative;
 }
 
 .timer {
@@ -52,15 +64,14 @@ h2 {
   overflow: hidden;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
+
 iframe {
   width: 100%;
   height: 80px;
   border: none;
-}    }
+}
 
-    .message {
-      
-    }
+       }
   </style>
 </head>
 <body>
